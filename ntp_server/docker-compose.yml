@@ -19,6 +19,6 @@ services:
     links:
       - gpsd
     ports:
-      - 123:132/udp
+      - 123:123/udp
     restart: always
 
