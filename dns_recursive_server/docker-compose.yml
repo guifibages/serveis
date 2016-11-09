@@ -1,0 +1,10 @@
+version: '2'
+services:
+  dns_recursive:
+    build: .
+    ports:
+     - "53:53"
+     - "53:53/udp"
+    volumes:
+     - ./named.conf:/etc/bind/named.conf:ro
+    restart: always
