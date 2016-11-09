@@ -1,0 +1,9 @@
+FROM debian:jessie-slim
+
+RUN apt-get update
+
+RUN apt-get install -y --no-install-recommends gpsd
+
+# -N (no daemonize)
+# -G (listen all interfaces)
+ENTRYPOINT ["/usr/sbin/gpsd", "/dev/ttyACM0", "-N", "-G"]
