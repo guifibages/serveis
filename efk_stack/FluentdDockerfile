@@ -1,0 +1,4 @@
+FROM fluent/fluentd:v0.12-latest
+
+RUN gem install fluent-plugin-elasticsearch fluent-plugin-record-reformer --no-rdoc --no-ri
+
