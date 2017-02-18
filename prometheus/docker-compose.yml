@@ -1,0 +1,13 @@
+version: '2'
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+     - 9090:9090
+    volumes:
+     - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  snmp_exporter:
+    build: snmp_exporter
+    ports:
+     - 9116:9116
+    
