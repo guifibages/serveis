@@ -1,0 +1,1 @@
+El binari `snmp_exporter` s'ha extret de la release 0.2.0 (amd64) de https://github.com/prometheus/snmp_exporter (no s'està baixant directament des del container perquè `wget` no suporta pàgines TLS...).

@@ -6,8 +6,9 @@ services:
      - 9090:9090
     volumes:
      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    links:
+     - snmp_exporter
   snmp_exporter:
     build: snmp_exporter
     ports:
      - 9116:9116
-    

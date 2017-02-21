@@ -18,3 +18,20 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
   
+  - job_name: 'snmp'
+    static_configs:
+      - targets:
+        - 10.228.16.129
+        - 10.228.19.81
+        - 10.228.19.65
+        - 10.228.17.1
+    metrics_path: /snmp
+    params:
+      module: [default]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp_exporter:9116
