@@ -21,10 +21,15 @@ scrape_configs:
   - job_name: 'snmp'
     static_configs:
       - targets:
-        - 10.228.16.129
+        - 10.228.16.129 # Mikrotiks
         - 10.228.19.81
         - 10.228.19.65
         - 10.228.17.1
+        - 10.228.28.10 # Antenes
+        - 10.228.17.247
+        - 10.228.28.8
+        - 10.228.16.137
+        - 10.228.17.243
     metrics_path: /snmp
     params:
       module: [default]
