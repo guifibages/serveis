@@ -1,14 +1,27 @@
 version: '2'
 services:
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v1.5.2
     ports:
      - 9090:9090
     volumes:
      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     links:
      - snmp_exporter
+    volumes:
+     - ../volumes/prometheus:/prometheus
   snmp_exporter:
     build: snmp_exporter
     ports:
      - 9116:9116
+  grafana:
+    image: grafana/grafana:4.1.2
+    ports:
+     - 3000:3000
+    links:
+     - prometheus
+    volumes:
+     - ../volumes/grafana:/var/lib/grafana
+    environment:
+     - GF_SERVER_ROOT_URL=http://grafana.guifibages.net
+     - GF_SECURITY_ADMIN_PASSWORD=secret
