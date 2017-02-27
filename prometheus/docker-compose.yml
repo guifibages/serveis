@@ -6,14 +6,15 @@ services:
      - 9090:9090
     volumes:
      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+     - ../volumes/prometheus:/prometheus
     links:
      - snmp_exporter
-    volumes:
-     - ../volumes/prometheus:/prometheus
   snmp_exporter:
     build: snmp_exporter
     ports:
      - 9116:9116
+    volumes:
+     - ./snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
   grafana:
     image: grafana/grafana:4.1.2
     ports:

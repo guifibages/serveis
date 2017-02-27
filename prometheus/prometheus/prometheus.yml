@@ -18,21 +18,35 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
   
-  - job_name: 'snmp'
+  - job_name: 'snmp_routers'
     static_configs:
       - targets:
-        - 10.228.16.129 # Mikrotiks
+        - 10.228.16.129
         - 10.228.19.81
         - 10.228.19.65
         - 10.228.17.1
-        - 10.228.28.10 # Antenes
+    metrics_path: /snmp
+    params:
+      module: [default_mikrotik]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp_exporter:9116
+  
+  - job_name: 'snmp_antenes'
+    static_configs:
+      - targets:
+        - 10.228.28.10
         - 10.228.17.247
         - 10.228.28.8
         - 10.228.16.137
         - 10.228.17.243
     metrics_path: /snmp
     params:
-      module: [default]
+      module: [default_v1]
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
