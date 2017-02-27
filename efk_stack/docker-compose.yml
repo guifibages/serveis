@@ -22,7 +22,8 @@ services:
     ports:
      - 9200:9200
     volumes:
-     - ./data/elastic:/usr/share/elasticsearch/data
+     - ../volumes/elastic:/usr/share/elasticsearch/data
+    mem_limit: 1500m
     restart: always
 
   kibana:
