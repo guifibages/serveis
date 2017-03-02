@@ -8,13 +8,9 @@ services:
      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
      - ../volumes/prometheus:/prometheus
     links:
+     - container_exporter
      - snmp_exporter
-  snmp_exporter:
-    build: snmp_exporter
-    ports:
-     - 9116:9116
-    volumes:
-     - ./snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+    restart: always
   grafana:
     image: grafana/grafana:4.1.2
     ports:
@@ -26,3 +22,21 @@ services:
     environment:
      - GF_SERVER_ROOT_URL=http://grafana.guifibages.net
      - GF_SECURITY_ADMIN_PASSWORD=secret
+    restart: always
+  
+  # Exporters;
+  snmp_exporter:
+    build: snmp_exporter
+    ports:
+     - 9116:9116
+    volumes:
+     - ./snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+    restart: always
+  container_exporter:
+     image: prom/container-exporter
+     ports:
+      - 9104:9104
+     volumes:
+      - /sys/fs/cgroup:/cgroup
+      - /var/run/docker.sock:/var/run/docker.sock
+     restart: always
