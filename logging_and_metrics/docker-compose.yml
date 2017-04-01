@@ -1,0 +1,102 @@
+version: "3"
+services:
+  # Webserver (reverse proxy)
+  # =========================
+  webserver:
+    image: banovo/docker-caddy-proxy
+    dns: 8.8.8.8
+    ports:
+     - 80:80
+     - 443:443
+     - 2015:2015
+    volumes:
+     - /var/run/docker.sock:/tmp/docker.sock:ro
+     - ../volumes/caddy/.caddy:/root/.caddy
+    restart: always
+  
+  # Metrics & alerts
+  # ================
+  prometheus:
+    image: prom/prometheus:v1.5.2
+    expose:
+     - 9090
+    volumes:
+     - ./metrics/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+     - ../volumes/prometheus:/prometheus
+    links:
+     - container_exporter
+     - snmp_exporter
+    environment:
+     - VIRTUAL_HOST="prom.s1.masip.xyz"
+     - SERVER_PORT=9090
+    restart: always
+  grafana:
+    image: grafana/grafana:4.1.2
+    expose:
+     - 3000
+    links:
+     - prometheus
+    volumes:
+     - ../volumes/grafana:/var/lib/grafana
+    environment:
+     - GF_SERVER_ROOT_URL=http://grafana.guifibages.net
+     - GF_SECURITY_ADMIN_PASSWORD=secret
+     - VIRTUAL_HOST="grafana.s1.masip.xyz"
+     - SERVER_PORT=3000
+    restart: always
+  
+  # Exporters;
+  snmp_exporter:
+    build:
+      context: ./metrics/snmp_exporter
+    expose:
+     - 9116
+    volumes:
+     - ./metrics/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
+    restart: always
+  container_exporter:
+     image: prom/container-exporter
+     expose:
+      - 9104
+     volumes:
+      - /sys/fs/cgroup:/cgroup
+      - /var/run/docker.sock:/var/run/docker.sock
+     restart: always
+
+  # Logging
+  # =======
+  fluentd:
+    build:
+      context: ./logging
+      dockerfile: FluentdDockerfile
+    ports:
+     - 24224:24224 
+     - 5140:5140
+     - 5140:5140/udp
+    volumes:
+     - ../volumes/fluentd:/fluentd/log
+     - ./logging:/fluentd/etc
+    environment:
+     - FLUENTD_CONF=fluentd.conf
+    links:
+     - elasticsearch
+    restart: always
+  elasticsearch:
+    image: elasticsearch:5.1-alpine
+    expose:
+     - 9200
+    volumes:
+     - ../volumes/elastic:/usr/share/elasticsearch/data
+    #mem_limit: 1500m
+    restart: always
+  kibana:
+    image: kibana:5.1
+    expose:
+     - 5601
+    links:
+     - elasticsearch
+    restart: always
+
+volumes:
+  config:
+    driver: local
