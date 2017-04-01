@@ -1,0 +1,24 @@
+global:
+  resolve_timeout: 5m
+  
+  smtp_smarthost: 'smtp_smarthost:25'
+  smtp_from: 'AlertManager <alertmanager@guifibages.net>'
+  smtp_require_tls: false
+  
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s 
+  repeat_interval: 2h
+  receiver: 'noc-guifibages'
+
+receivers:
+- name: 'noc-guifibages'
+  email_configs:
+  - to: 'noc@guifibages.net'
+  
+# Test
+#- name: 'webhook'
+#  webhook_configs:
+#  - url: 'http://10.228.18.51:5001/'
+

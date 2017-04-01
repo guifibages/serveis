@@ -8,6 +8,16 @@ global:
 
   # A scrape configuration containing exactly one endpoint to scrape:
   # Here it's Prometheus itself.
+
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+        - 'alertmanager:9093'
+
+rule_files:
+  - 'alert.rules'
+
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
   - job_name: 'prometheus'
@@ -16,8 +26,15 @@ scrape_configs:
     scrape_interval: 5s
 
     static_configs:
-      - targets: ['localhost:9090', 'container_exporter:9104']
-  
+      - targets: ['localhost:9090']
+
+  - job_name: 'docker_host'
+    
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['container_exporter:9104']
+    
   - job_name: 'snmp_routers'
     static_configs:
       - targets:

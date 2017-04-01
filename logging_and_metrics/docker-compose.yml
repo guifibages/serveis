@@ -21,15 +21,24 @@ services:
     expose:
      - 9090
     volumes:
+     - ./metrics/prometheus/alert.rules:/etc/prometheus/alert.rules:ro
      - ./metrics/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
      - ../volumes/prometheus:/prometheus
     links:
      - container_exporter
      - snmp_exporter
+     - alertmanager
     environment:
      - VIRTUAL_HOST="prom.s1.masip.xyz"
      - SERVER_PORT=9090
     restart: always
+  alertmanager:
+    image: prom/alertmanager:latest
+    volumes:
+     - ./metrics/alertmanager/config.yml:/etc/alertmanager/config.yml
+    restart: always
+    depends_on:
+     - smtp_smarthost
   grafana:
     image: grafana/grafana:4.1.2
     expose:
@@ -43,6 +52,12 @@ services:
      - GF_SECURITY_ADMIN_PASSWORD=secret
      - VIRTUAL_HOST="grafana.s1.masip.xyz"
      - SERVER_PORT=3000
+    restart: always
+  smtp_smarthost:
+    image: namshi/smtp
+    environment:
+     - RELAY_NETWORKS=:172/8
+     - MAILNAME=mail.guifibages.net
     restart: always
   
   # Exporters;
