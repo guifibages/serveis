@@ -1,4 +1,4 @@
-version: "3"
+version: "2.0"
 services:
   # Webserver (reverse proxy)
   # =========================
@@ -93,7 +93,7 @@ services:
      - ./logging:/fluentd/etc
     environment:
      - FLUENTD_CONF=fluentd.conf
-    links:
+    depends_on:
      - elasticsearch
     restart: always
   elasticsearch:
@@ -102,16 +102,17 @@ services:
      - 9200
     volumes:
      - ../volumes/elastic:/usr/share/elasticsearch/data
-    #mem_limit: 1500m
+    mem_limit: 1500m
     restart: always
   kibana:
     image: kibana:5.1
     expose:
      - 5601
-    links:
+    depends_on:
      - elasticsearch
     restart: always
 
 volumes:
   config:
     driver: local
+
