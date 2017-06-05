@@ -70,13 +70,13 @@ services:
      - ./metrics/snmp_exporter/snmp.yml:/etc/snmp_exporter/snmp.yml
     restart: always
   container_exporter:
-     image: prom/container-exporter
-     expose:
-      - 9104
-     volumes:
-      - /sys/fs/cgroup:/cgroup
-      - /var/run/docker.sock:/var/run/docker.sock
-     restart: always
+    image: prom/container-exporter
+    expose:
+     - 9104
+    volumes:
+     - /sys/fs/cgroup:/cgroup
+     - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
 
   # Logging
   # =======
@@ -115,4 +115,3 @@ services:
 volumes:
   config:
     driver: local
-
