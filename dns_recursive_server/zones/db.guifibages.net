@@ -1,6 +1,6 @@
 $TTL    60
 @       IN      SOA     ns.guifibages.net. root.guifibages.net. (
-                              1         ; Serial
+                              2         ; Serial
                          604800         ; Refresh
                           86400         ; Retry
                         2419200         ; Expire
@@ -15,8 +15,10 @@ s1	IN	A	10.228.17.250
 s2	IN	A	10.228.18.51
 
 ; propietaris
-paco	IN	CNAME	s1
-xevi	IN	CNAME	s2
+;paco	IN	CNAME	s1
+;xevi	IN	CNAME	s2
+
+xevi	IN	NS	10.228.18.53
 
 ; serveis
 pool.ntp	IN      A	10.228.17.250
