@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from libcnml import CNMLParser
+import logging
 import requests
 import sys
+
+from libcnml import CNMLParser
 
 def parse(raw_cnml):
     c = CNMLParser(raw_cnml)
@@ -35,6 +37,8 @@ if __name__ == '__main__':
     
     for node in p.get_nodes():
         if is_supernode(node):
-            print(node)
+            logging.debug('Node: %s' % node)
             for dev in node.get_devices():
-                print(dev, dev.mainipv4)
+                logging.debug('%s: %s' % (dev, dev.mainipv4))
+                if len(dev.mainipv4) > 0:
+                    print(dev.mainipv4)

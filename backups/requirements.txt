@@ -1,4 +1,8 @@
 lxml
 libcnml
 requests
-paramiko
+aiohttp
+aiofiles
+asyncssh
+uvloop
+
