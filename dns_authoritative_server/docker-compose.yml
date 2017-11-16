@@ -3,8 +3,8 @@ services:
   dns:
     build: .
     ports:
-     - "53:53"
-     - "53:53/udp"
+     - "127.0.0.2:53:53"
+     - "127.0.0.2:53:53/udp"
     volumes:
-     - ./named.conf:/etc/bind/named.conf:ro
-     - ./zones/:/etc/bind/zones/:ro
+     - ./conf:/etc/bind:ro
+    restart: always
