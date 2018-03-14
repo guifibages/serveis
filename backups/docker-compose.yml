@@ -4,3 +4,38 @@ services:
     build: .
     volumes:
      - ./backup:/backup
+    links:
+     - dns-api
+    networks:
+     - vpcbr
+    restart: always
+  dns-api:
+    build:
+      context: dns-api
+    ports:
+     - 5000:5000
+    environment:
+     - SERVER=172.100.0.2
+     - TSIG_USERNAME=TRANSFER
+     - TSIG_PASSWORD=/h9xIk0tbF3A0lOzy6BYAQ==
+     - ZONES=guifinet
+    links:
+     - dns
+    networks:
+     - vpcbr
+    restart: always
+  dns:
+    build:
+      context: dns
+    restart: always
+    networks:
+      vpcbr:
+        ipv4_address: 172.100.0.2
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.100.0.0/16
+         gateway: 172.100.0.1

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 import logging
 import requests
@@ -28,17 +27,15 @@ def is_supernode(node):
                     return True
     return False
 
-if __name__ == '__main__':
-    zone = 2426 # bages
-
+def get_supernodes(zone):
     raw_cnml = request_cnml_from_zone(zone)
     filename = save_cnml(raw_cnml)
     p = parse(filename)
-    
+
     for node in p.get_nodes():
         if is_supernode(node):
             logging.debug('Node: %s' % node)
             for dev in node.get_devices():
                 logging.debug('%s: %s' % (dev, dev.mainipv4))
                 if len(dev.mainipv4) > 0:
-                    print(dev.mainipv4)
+                    yield dev.mainipv4
