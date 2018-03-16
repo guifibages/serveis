@@ -1,0 +1,9 @@
+lxml
+libcnml
+requests
+aiohttp==3.0.7
+aiofiles
+asyncssh
+uvloop==0.9.1
+aiodns
+async_timeout
