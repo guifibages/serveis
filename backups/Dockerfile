@@ -9,6 +9,6 @@ WORKDIR /src
 
 RUN pip3 install -r requirements.txt
 
-COPY ./src /src
+COPY ./backup /src
 
 ENTRYPOINT ["python3", "-u", "main.py"]

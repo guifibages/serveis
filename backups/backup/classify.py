@@ -9,7 +9,7 @@ async def fetch(url):
     try:
         async with aiohttp.ClientSession() as session:
             with async_timeout.timeout(10):
-                async with session.get(url) as response:
+                async with session.get(url, ssl=False) as response:
                     return await response.text()
     except asyncio.TimeoutError:
         pass
@@ -18,13 +18,12 @@ async def fetch(url):
 
 
 async def detect_device(ipv4):
-    text = await fetch('http://%s' % ipv4)
-    if text:
-        if text.contains('mikrotik'):
-            return 'mikrotik'
-    else:
-        return 'unknown'
+    text = await fetch('http://%s' % ipv4) or 'unknown'
 
+    if 'mikrotik' in text:
+        return 'mikrotik'
+    else:
+        return text
 
 async def classify(ipv4):
     device = await detect_device(ipv4)

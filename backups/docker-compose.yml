@@ -3,7 +3,7 @@ services:
   backup:
     build: .
     volumes:
-     - ./backup:/backup
+     - ./backup_vol:/backup
     links:
      - dns-api
     networks:
