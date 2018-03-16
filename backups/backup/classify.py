@@ -13,17 +13,19 @@ async def fetch(url):
                     return await response.text()
     except asyncio.TimeoutError:
         pass
+    except aiohttp.client_exceptions.ClientConnectorError as e:
+        print(f"Error when {url}: {e}")
     
     return None
 
 
 async def detect_device(ipv4):
-    text = await fetch('http://%s' % ipv4) or 'unknown'
+    text = await fetch('http://%s' % ipv4)
 
     if 'mikrotik' in text:
         return 'mikrotik'
     else:
-        return text
+        return 'unknown'
 
 async def classify(ipv4):
     device = await detect_device(ipv4)
