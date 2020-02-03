@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+
+  dns:
+    image: resystit/bind9
+    ports:
+    - "53:53/udp"
+    volumes:
+       - ./conf:/etc/bind
+
+

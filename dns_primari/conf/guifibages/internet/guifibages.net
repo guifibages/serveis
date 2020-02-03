@@ -1,0 +1,22 @@
+$TTL 3600
+@       IN      SOA     ns1.guifibages.net. noc.guifibages.net. (
+                        2020010408
+                        3H
+                        15M
+                        1W
+                        1D )
+
+                     IN NS     ns1.guifibages.net.
+                     IN NS     ns6.gandi.net.
+                     IN NS     ns2.guifibages.net.
+                     IN MX  10 smtp.guifibages.net.
+
+ns1                  IN A      109.69.11.113
+                        AAAA 2a00:1508::109:69:11:113
+
+
+ns2                  IN A      213.148.208.122
+tdm                  IN CNAME  torredelmoro
+torredelmoro         IN A      109.69.11.113
+                        AAAA    2a00:1508::109:69:11:113
+
