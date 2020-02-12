@@ -3,10 +3,13 @@ version: '3.7'
 services:
 
   dns:
-    image: resystit/bind9
+    build:
+      context: .
+      args:
+        - serial=2020010101
     ports:
     - "53:53/udp"
-    volumes:
-       - ./conf:/etc/bind
+#    volumes:
+#       - ./conf:/etc/bind
 
 

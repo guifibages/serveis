@@ -1,10 +1,10 @@
 $TTL 3600
-@       IN      SOA     ns1.guifibages.net. noc.guifibages.net. (
-                        2019121501
-                        3H
-                        15M
-                        1W
-                        1D )
+@	IN	SOA	ns1.guifibages.net. noc.guifibages.net. (
+			2017100101
+			3H
+			15M
+			1W
+			1D )
 
                     IN NS     ns1
                     IN MX  10 smtp

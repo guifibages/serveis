@@ -1,0 +1,54 @@
+name: DNS primari
+
+on:
+  push:
+    # Publish `master` as Docker `latest` image.
+    branches:
+      - master
+    paths:
+    -  '.github/workflows/dnsprimari.yml'
+    - 'dns_primari/**'
+
+  # Run tests for any PRs.
+  pull_request:
+    paths:
+    - 'dns_primari/**'
+
+jobs:
+  # Run tests.
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: resystit/bind9
+      options: --entrypoint "rndc-confgen -a && named -c /etc/bind/named.conf -g -u named"
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+         entrypoint: rndc-confgen -a && named -c /etc/bind/named.conf -g -u named
+
+      - name: Test checkconf
+        run: |
+          ls /etc/bind
+          cp -r dns_primari/conf/* /etc/bind/
+          ls /etc/bind
+          named-checkconf -z /etc/bind/named.conf | grep failed && exit 1 || echo ok
+
+  build:
+    # Ensure test job passes before pushing image.
+    needs: test
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build dns_primari --tag image --build-arg serial=`date +%s`
+
+#      - name: Test dns running
+#        run: |
+#          rndc reload
+#          apk --update add bind-tools
+#          dig +norecurse tdm.guifibages.net
