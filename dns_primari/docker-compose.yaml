@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+
+  dns:
+    build:
+      context: .
+      args:
+        - serial=2020010101
+    ports:
+    - "53:53/udp"
+#    volumes:
+#       - ./conf:/etc/bind
+
+

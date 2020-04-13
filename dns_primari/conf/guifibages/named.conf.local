@@ -1,0 +1,22 @@
+
+
+acl "guifi-subnet" {
+    127.0.0.1;
+    192.168.0.0/16;
+    10.0.0.0/8;
+    172.16.0.0/12;
+    5.10.206.0/25;
+};
+
+
+
+view "internal" {
+        match-clients { guifi-subnet; };
+	zone "guifibages.net" IN { type master; file "/etc/bind/guifibages/guifi/guifibages.net"; notify yes; allow-transfer { any; }; };
+};
+
+
+view "external" {
+        match-clients { any; };
+	zone "guifibages.net" IN { type master; file "/etc/bind/guifibages/internet/guifibages.net"; notify yes; allow-transfer { any; }; };
+};
