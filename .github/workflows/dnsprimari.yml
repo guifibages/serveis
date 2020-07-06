@@ -47,6 +47,10 @@ jobs:
       - name: Build image
         run: docker build dns_primari --tag docker.pkg.github.com/$GITHUB_REPOSITORY/dns_primari:latest --build-arg serial=`date +%s`
 
+      - name: Run image
+        run: docker run -it -d --name dns docker.pkg.github.com/$GITHUB_REPOSITORY/dns_primari:latest
+
+
 # Github Package Registry
       - name: Docker login
         run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p $GITHUB_TOKEN
